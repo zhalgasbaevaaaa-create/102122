@@ -1,0 +1,937 @@
+{
+  "ranAt": "2026-10-30T18:01:37.217Z",
+  "passed": 186,
+  "total": 186,
+  "results": [
+    {
+      "name": "question bank has no structural errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "question bank size > 1000",
+      "ok": true,
+      "detail": "1616 questions"
+    },
+    {
+      "name": "format \"mcq\" present",
+      "ok": true,
+      "detail": "559 questions"
+    },
+    {
+      "name": "format \"truefalse\" present",
+      "ok": true,
+      "detail": "342 questions"
+    },
+    {
+      "name": "format \"match-dates\" present",
+      "ok": true,
+      "detail": "80 questions"
+    },
+    {
+      "name": "format \"match-persons\" present",
+      "ok": true,
+      "detail": "60 questions"
+    },
+    {
+      "name": "format \"chronological\" present",
+      "ok": true,
+      "detail": "40 questions"
+    },
+    {
+      "name": "format \"map\" present",
+      "ok": true,
+      "detail": "38 questions"
+    },
+    {
+      "name": "format \"image-id\" present",
+      "ok": true,
+      "detail": "17 questions"
+    },
+    {
+      "name": "format \"fill-blank\" present",
+      "ok": true,
+      "detail": "320 questions"
+    },
+    {
+      "name": "format \"find-mistake\" present",
+      "ok": true,
+      "detail": "80 questions"
+    },
+    {
+      "name": "format \"multi-select\" present",
+      "ok": true,
+      "detail": "80 questions"
+    },
+    {
+      "name": "every category has 100+ questions",
+      "ok": true,
+      "detail": "stone-bronze:195 saka-hun:203 turkic:207 karakhanid-kipchak:188 mongol-horde:210 khanate:203 russian-alash:206 soviet-independent:204"
+    },
+    {
+      "name": "every category has 40+ facts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "all facts reference known sources",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "all persons reference known sources",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "all events reference known sources",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "six games defined",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "every game has exactly 10 levels",
+      "ok": true,
+      "detail": "adventure:10 strategy:10 defense:10 race:10 puzzle:10 battle:10"
+    },
+    {
+      "name": "every level declares 10+ educational interactions",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "all game levels have Kazakh briefings",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "all levels map to a real period or question category",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "strategy decisions all carry a documented history note",
+      "ok": true,
+      "detail": "19 decisions"
+    },
+    {
+      "name": "map kingdoms all carry stylised/approximate accuracy flags",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "14 historical periods covered",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "server boots",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: Lora woff2 files are shipped locally",
+      "ok": true,
+      "detail": "8 files"
+    },
+    {
+      "name": "fonts: payload stays small",
+      "ok": true,
+      "detail": "210 KB"
+    },
+    {
+      "name": "fonts: every file is a real WOFF2 container",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: all 17 Kazakh letters exist in the shipped subsets",
+      "ok": true,
+      "detail": "18/18"
+    },
+    {
+      "name": "fonts: @font-face rules exist",
+      "ok": true,
+      "detail": "8 faces"
+    },
+    {
+      "name": "fonts: cyrillic-ext range declared (ә ғ қ ң ө ұ ү һ)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: cyrillic range declared (і, ұ)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: faces are self-hosted from /fonts/",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: index.html preloads the local cyrillic subsets",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: no Google Fonts request in index.html",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: Lora is the primary family for body and display text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: fonts.css is imported by the app stylesheet",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: Kazakh language rules present (:lang(kk))",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: served over HTTP as font/woff2",
+      "ok": true,
+      "detail": "200 font/woff2"
+    },
+    {
+      "name": "fonts: served page has no third-party font origin",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fonts: Kazakh-specific letters used in the UI copy",
+      "ok": true,
+      "detail": "12 of 18 letters in HomePage"
+    },
+    {
+      "name": "multiplayer: both players authenticate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: two sockets connect to /ws",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: token handshake authenticates both players",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: invalid token is rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: room created with a 6-character code",
+      "ok": true,
+      "detail": "S8FX3G"
+    },
+    {
+      "name": "multiplayer: second player joins by code",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: unknown room code reports NO_ROOM",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: non-host cannot start the match",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: host can add a bot seat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: both clients receive question 1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: the answer key is never sent over the socket",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: match reaches the finished state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: a seat cannot answer the same question twice",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: questions are drawn without repeats",
+      "ok": true,
+      "detail": "10 unique"
+    },
+    {
+      "name": "multiplayer: final standings include every seat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: every human seat played all questions",
+      "ok": true,
+      "detail": "10/10 10/10"
+    },
+    {
+      "name": "multiplayer: server-computed score present for every human seat",
+      "ok": true,
+      "detail": "[592,282]"
+    },
+    {
+      "name": "multiplayer: score arithmetic matches the server rules",
+      "ok": true,
+      "detail": "[[4,592],[2,282]]"
+    },
+    {
+      "name": "multiplayer: XP payload returned to the player",
+      "ok": true,
+      "detail": "xp=103"
+    },
+    {
+      "name": "multiplayer: rank returned",
+      "ok": true,
+      "detail": "Жас зерттеуші"
+    },
+    {
+      "name": "multiplayer: result persisted to the player profile",
+      "ok": true,
+      "detail": "battle score=786"
+    },
+    {
+      "name": "multiplayer: every reveal shows a human-readable correct answer",
+      "ok": true,
+      "detail": "10 reveals, 0 bad"
+    },
+    {
+      "name": "multiplayer: HTTP room lookup works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: unknown room returns 404",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multiplayer: status endpoint reports the ws path",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "online UI: multiplayer screen mounts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "online UI: offers to connect to the server",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "online UI: socket connects and lobby options appear",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "online UI: a real room code is displayed",
+      "ok": true,
+      "detail": "Q8J832"
+    },
+    {
+      "name": "online UI: host controls rendered (bots + start)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "online UI: seat list shows the signed-in player",
+      "ok": true,
+      "detail": "UI Сынақ"
+    },
+    {
+      "name": "online UI: room is live on the server",
+      "ok": true,
+      "detail": "players=1"
+    },
+    {
+      "name": "reveal: answer label built for all 1616 questions",
+      "ok": true,
+      "detail": "0 bad"
+    },
+    {
+      "name": "reveal: all 10 question formats covered",
+      "ok": true,
+      "detail": "10 formats"
+    },
+    {
+      "name": "reveal: truefalse label names the option",
+      "ok": true,
+      "detail": "Қате"
+    },
+    {
+      "name": "reveal: multi-select label joins every correct option",
+      "ok": true,
+      "detail": "А - В"
+    },
+    {
+      "name": "reveal: matching label pairs left with right",
+      "ok": true,
+      "detail": "Отырар -> 1218; Сығанақ -> XIV ғ."
+    },
+    {
+      "name": "reveal: chronological label follows the order",
+      "ok": true,
+      "detail": "Бірінші -> Екінші"
+    },
+    {
+      "name": "reveal: empty/garbage key does not crash",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "health endpoint",
+      "ok": true,
+      "detail": "bank=1616"
+    },
+    {
+      "name": "auth providers endpoint offers password login only",
+      "ok": true,
+      "detail": "{\"password\":true,\"passwordMinLength\":8}"
+    },
+    {
+      "name": "google OAuth endpoints no longer exist",
+      "ok": true,
+      "detail": "start=404 callback=404"
+    },
+    {
+      "name": "student registration",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "weak password rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "duplicate e-mail rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "login works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wrong password rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "session token resolves user",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile requires auth",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "content bundle complete",
+      "ok": true,
+      "detail": "games=6 persons=31 events=33"
+    },
+    {
+      "name": "every game has 10 levels",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "session start returns questions without answer keys",
+      "ok": true,
+      "detail": "n=10"
+    },
+    {
+      "name": "questions are unique within a session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "correct answers are graded as correct (server-side)",
+      "ok": true,
+      "detail": "10/10"
+    },
+    {
+      "name": "duplicate answer to the same question rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "answer for a foreign question rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "session completes and scores",
+      "ok": true,
+      "detail": "score=2110 xp=281"
+    },
+    {
+      "name": "client base score is capped server-side",
+      "ok": true,
+      "detail": "gameplay=600"
+    },
+    {
+      "name": "double completion is idempotent (no score farming)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile aggregates results",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "leaderboard returns real rows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "daily challenge is deterministic for the day",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "daily challenge stable across calls",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "student cannot access teacher API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "student cannot access admin API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teacher can list students",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teacher cannot access admin API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "CSV export returns data",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin can list users",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin can create a question",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "incomplete question rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "admin can edit settings",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "password hash is verifiable after restart-safe storage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "logout succeeds",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "token invalid after logout",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "login rate limiting engages",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: all 22 routes render in a real DOM without runtime errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: home page shows the platform content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: map page renders the interactive map",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: timeline page lists dated events",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: battle level screen advertises the online mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: person detail page shows the historical figure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "routes: profile page shows the signed-in learner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "renders HomePage",
+      "ok": true,
+      "detail": "34546 chars"
+    },
+    {
+      "name": "renders GamesPage",
+      "ok": true,
+      "detail": "30139 chars"
+    },
+    {
+      "name": "renders MapPage",
+      "ok": true,
+      "detail": "17067 chars"
+    },
+    {
+      "name": "renders TimelinePage",
+      "ok": true,
+      "detail": "63210 chars"
+    },
+    {
+      "name": "renders PersonsPage",
+      "ok": true,
+      "detail": "101005 chars"
+    },
+    {
+      "name": "renders PersonPage",
+      "ok": true,
+      "detail": "89 chars (loading state)"
+    },
+    {
+      "name": "renders EncyclopediaPage",
+      "ok": true,
+      "detail": "21644 chars"
+    },
+    {
+      "name": "renders LeaderboardPage",
+      "ok": true,
+      "detail": "2574 chars"
+    },
+    {
+      "name": "renders AchievementsPage",
+      "ok": true,
+      "detail": "18369 chars"
+    },
+    {
+      "name": "renders AuthPage",
+      "ok": true,
+      "detail": "7107 chars"
+    },
+    {
+      "name": "renders ProfilePage",
+      "ok": true,
+      "detail": "543 chars"
+    },
+    {
+      "name": "renders TeacherPage",
+      "ok": true,
+      "detail": "552 chars"
+    },
+    {
+      "name": "renders AdminPage",
+      "ok": true,
+      "detail": "4095 chars"
+    },
+    {
+      "name": "renders DailyChallengePage",
+      "ok": true,
+      "detail": "552 chars"
+    },
+    {
+      "name": "renders NotFoundPage",
+      "ok": true,
+      "detail": "1237 chars"
+    },
+    {
+      "name": "AdventureStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "StrategyStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "DefenseStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RaceStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "PuzzleStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "BattleStage module loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "puzzle module exports a component",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gameplay adventure: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay adventure: answering returns verdict + historical explanation",
+      "ok": true,
+      "detail": "1024 chars"
+    },
+    {
+      "name": "gameplay strategy: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay strategy: answering returns verdict + historical explanation",
+      "ok": true,
+      "detail": "1582 chars"
+    },
+    {
+      "name": "gameplay defense: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay defense: answering returns verdict + historical explanation",
+      "ok": true,
+      "detail": "1007 chars"
+    },
+    {
+      "name": "gameplay race: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay race: answering returns verdict + historical explanation",
+      "ok": true,
+      "detail": "1015 chars"
+    },
+    {
+      "name": "gameplay puzzle: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay puzzle: match-3 board responds to input",
+      "ok": true,
+      "detail": "move counter rendered"
+    },
+    {
+      "name": "gameplay battle: level select → briefing → in-game HUD",
+      "ok": true,
+      "detail": "picked=true briefed=true hud=true question=true | errors: Not implemented: Window's scrollTo() method ;; THREE.WebGLRenderer: glVersion.indexOf is not a function"
+    },
+    {
+      "name": "gameplay battle: answering returns verdict + historical explanation",
+      "ok": true,
+      "detail": "1645 chars"
+    },
+    {
+      "name": "GameShell renders 10 levels for Ұлы дала шежіресі",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "GameShell renders 10 levels for Ұлы дала билеушілері",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "GameShell renders 10 levels for Тарихи шеп",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "GameShell renders 10 levels for Ұлы дала бәйгесі",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "GameShell renders 10 levels for Тарих қазынасы",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "GameShell renders 10 levels for Тарих майданы",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine renders mcq",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades mcq through the API",
+      "ok": true,
+      "detail": "1 answers sent"
+    },
+    {
+      "name": "QuizEngine renders truefalse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades truefalse through the API",
+      "ok": true,
+      "detail": "2 answers sent"
+    },
+    {
+      "name": "QuizEngine renders match-dates",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades match-dates through the API",
+      "ok": true,
+      "detail": "3 answers sent"
+    },
+    {
+      "name": "QuizEngine renders match-persons",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades match-persons through the API",
+      "ok": true,
+      "detail": "4 answers sent"
+    },
+    {
+      "name": "QuizEngine renders chronological",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades chronological through the API",
+      "ok": true,
+      "detail": "5 answers sent"
+    },
+    {
+      "name": "QuizEngine renders map",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades map through the API",
+      "ok": true,
+      "detail": "6 answers sent"
+    },
+    {
+      "name": "QuizEngine renders image-id",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades image-id through the API",
+      "ok": true,
+      "detail": "7 answers sent"
+    },
+    {
+      "name": "QuizEngine renders fill-blank",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades fill-blank through the API",
+      "ok": true,
+      "detail": "8 answers sent"
+    },
+    {
+      "name": "QuizEngine renders find-mistake",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades find-mistake through the API",
+      "ok": true,
+      "detail": "9 answers sent"
+    },
+    {
+      "name": "QuizEngine renders multi-select",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "QuizEngine grades multi-select through the API",
+      "ok": true,
+      "detail": "10 answers sent"
+    },
+    {
+      "name": "GameShell exposes a start button",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+  --color-ink: #070b14;
+  --color-navy: #0a0f1c;
+  --color-navy-2: #0f1728;
+  --color-charcoal: #141a24;
+  --color-gold: #d9a94a;
+  --color-gold-soft: #f0cd85;
+  --color-teal: #2fb3a8;
+  --color-teal-soft: #6fd8ce;
+  --color-parchment: #f4ead6;
+  /* Lora carries the full Kazakh Cyrillic range (ә ғ қ ң ө ұ ү һ і) — it is
+     used for both display and body text so Kazakh typography is consistent.
+     `ext-[әғқңөұүһі]` on every family declaration guarantees the Kazakh
+     glyphs are picked from Lora even if the OS font lacks them. */
+  --font-display: 'Lora', 'PT Serif', 'Noto Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Lora', 'PT Serif', 'Noto Serif', 'Segoe UI', system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --glass: rgba(18, 26, 42, 0.72);
+  --glass-border: rgba(217, 169, 74, 0.18);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(47, 179, 168, 0.14), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(217, 169, 74, 0.12), transparent 65%),
+    radial-gradient(700px 700px at 50% 110%, rgba(47, 179, 168, 0.08), transparent 70%),
+    #070b14;
+  color: #e8edf6;
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Kazakh text tuning: Lora's Cyrillic sits slightly tight — open it up and
+   keep ә/ғ/қ/ң/ө/ұ/ү/һ at the same optical weight as the Latin faces. */
+:lang(kk) {
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  word-spacing: 0.02em;
+}
+
+/* Uppercase Kazakh labels lose their descenders' rhythm — add a touch of
+   tracking so ШЕЖІРЕ / ЖЕТІСТІКТЕР stay legible. */
+.chip, .btn, th, .eyebrow {
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+}
+
+/* ── glass surfaces ─────────────────────────────────────────────── */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+}
+
+.glass-strong {
+  background: linear-gradient(160deg, rgba(22, 32, 51, 0.94), rgba(10, 15, 28, 0.96));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(217, 169, 74, 0.22);
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+.gold-line {
+  background: linear-gradient(90deg, transparent, rgba(217, 169, 74, 0.6), transparent);
+  height: 1px;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(100deg, #f0cd85, #d9a94a 45%, #fff2d0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-teal {
+  background: linear-gradient(100deg, #6fd8ce, #2fb3a8 60%, #a7f0e9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── ornament / texture ─────────────────────────────────────────── */
+.ornament-bg {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(217, 169, 74, 0.16) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.steppe-glow {
+  background: radial-gradient(ellipse at 50% 120%, rgba(47, 179, 168, 0.28), transparent 62%);
+}
+
+/* ── animations ─────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-floaty { animation: floaty 5s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(240, 205, 133, 0.25), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(47, 179, 168, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(47, 179, 168, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 179, 168, 0); }
+}
+.pulse-ring { animation: pulseRing 2.2s ease-out infinite; }
+
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-pop { animation: popIn 0.28s ease-out both; }
+
+@keyframes slideInRight {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-toast { animation: slideInRight 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── controls ───────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px) scale(0.995); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-gold {
+  background: linear-gradient(160deg, #e9be66, #c1912f);
+  color: #131008;
+  box-shadow: 0 10px 30px -12px rgba(217, 169, 74, 0.7);
+}
+.btn-gold:hover:not(:disabled) { box-shadow: 0 14px 36px -10px rgba(217, 169, 74, 0.85); }
+
+.btn-teal {
+  background: linear-gradient(160deg, #3ec9bd, #1f8c83);
+  color: #04120f;
+  box-shadow: 0 10px 30px -12px rgba(47, 179, 168, 0.7);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #dbe4f2;
+}
+.btn-ghost:hover:not(:disabled) { background: rgba(255, 255, 255, 0.09); border-color: rgba(217, 169, 74, 0.4); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+.field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(9, 14, 25, 0.75);
+  padding: 0.65rem 0.85rem;
+  color: #e8edf6;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  font-size: 0.95rem;
+}
+.field:focus {
+  border-color: rgba(47, 179, 168, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 179, 168, 0.15);
+}
+.field::placeholder { color: rgba(232, 237, 246, 0.35); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); }
+::-webkit-scrollbar-thumb { background: rgba(217, 169, 74, 0.28); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(217, 169, 74, 0.45); }
+
+/* map interaction */
+.map-surface { touch-action: none; cursor: grab; }
+.map-surface:active { cursor: grabbing; }
+
+.no-select { user-select: none; -webkit-user-select: none; }
+
+/* question option states */
+.opt {
+  width: 100%;
+  text-align: left;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.8rem 1rem;
+  transition: all 0.16s ease;
+  cursor: pointer;
+  color: #e8edf6;
+}
+.opt:hover:not(:disabled) { border-color: rgba(47, 179, 168, 0.55); background: rgba(47, 179, 168, 0.1); }
+.opt[data-state='selected'] { border-color: rgba(217, 169, 74, 0.75); background: rgba(217, 169, 74, 0.14); }
+.opt[data-state='correct'] { border-color: rgba(47, 179, 168, 0.85); background: rgba(47, 179, 168, 0.18); }
+.opt[data-state='wrong'] { border-color: rgba(201, 106, 74, 0.85); background: rgba(201, 106, 74, 0.16); }
+.opt:disabled { cursor: default; }
