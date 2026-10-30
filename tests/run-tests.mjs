@@ -125,6 +125,18 @@ if (up) {
     if (!STUDENT_TOKEN) console.log('    (ui token mint failed:', r.status, JSON.stringify(body).slice(0, 120) + ')');
   } catch (e) { console.log('    (ui token mint threw:', e.message, ')'); }
 
+  // admin session for the audit suite (its login happens before the API suite
+  // deliberately exhausts the login bucket)
+  let ADMIN_TOKEN = null;
+  try {
+    const r = await fetch(BASE + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'admin@arena.kz', password: 'Admin12345!' }),
+    });
+    ADMIN_TOKEN = (await r.json()).token ?? null;
+  } catch { /* reported by the audit suite */ }
+
   console.log('\n═══ 2. KAZAKH TYPOGRAPHY (self-hosted Lora) ════════════');
 try {
   const { runFontTests } = await import('./fonts.test.mjs');
@@ -159,6 +171,14 @@ console.log('\n═══ 3. WEBSOCKET MULTIPLAYER (2 live clients) ════�
   const { runApiTests } = await import('./api.test.mjs');
   add(await runApiTests());
 
+  console.log('\n═══ 4b. ROBUSTNESS & SECURITY AUDIT ════════════════════');
+  try {
+    const { runAuditTests } = await import('./audit.test.mjs');
+    await runAuditTests(BASE, rec, ADMIN_TOKEN);
+  } catch (e) {
+    rec('audit suite executed', false, e.message.slice(0, 200));
+  }
+
   try {
     const { runRoutesUiTests } = await import('./routes-ui.test.mjs');
     await runRoutesUiTests(BASE, rec, STUDENT_TOKEN);
@@ -190,9 +210,17 @@ console.log('\n═══ 3. WEBSOCKET MULTIPLAYER (2 live clients) ════�
     rec('game engine suite executed', false, e.message.slice(0, 200));
   }
 
+  console.log('\n═══ 7. ROOM REAPER (memory safety) ═════════════════════');
+  try {
+    const { runReaperTests } = await import('./reaper.test.mjs');
+    await runReaperTests(rec);
+  } catch (e) {
+    rec('reaper suite executed', false, e.message.slice(0, 200));
+  }
+
   const skipE2E = process.argv.includes('--no-e2e');
   if (!skipE2E) {
-    console.log('\n═══ 7. BROWSER E2E (Playwright/Chromium) ════════════════');
+    console.log('\n═══ 8. BROWSER E2E (Playwright/Chromium) ════════════════');
     try {
       const { runE2E } = await import('./e2e.test.mjs');
       add(await runE2E());

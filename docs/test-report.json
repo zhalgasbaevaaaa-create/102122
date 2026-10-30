@@ -1,7 +1,7 @@
 {
-  "ranAt": "2026-10-30T18:01:37.217Z",
-  "passed": 186,
-  "total": 186,
+  "ranAt": "2026-10-30T18:51:11.851Z",
+  "passed": 210,
+  "total": 210,
   "results": [
     {
       "name": "question bank has no structural errors",
@@ -236,7 +236,7 @@
     {
       "name": "multiplayer: room created with a 6-character code",
       "ok": true,
-      "detail": "S8FX3G"
+      "detail": "JL5A8A"
     },
     {
       "name": "multiplayer: second player joins by code",
@@ -296,17 +296,17 @@
     {
       "name": "multiplayer: server-computed score present for every human seat",
       "ok": true,
-      "detail": "[592,282]"
+      "detail": "[302,0]"
     },
     {
       "name": "multiplayer: score arithmetic matches the server rules",
       "ok": true,
-      "detail": "[[4,592],[2,282]]"
+      "detail": "[[2,302],[0,0]]"
     },
     {
       "name": "multiplayer: XP payload returned to the player",
       "ok": true,
-      "detail": "xp=103"
+      "detail": "xp=6"
     },
     {
       "name": "multiplayer: rank returned",
@@ -316,7 +316,7 @@
     {
       "name": "multiplayer: result persisted to the player profile",
       "ok": true,
-      "detail": "battle score=786"
+      "detail": "battle score=60"
     },
     {
       "name": "multiplayer: every reveal shows a human-readable correct answer",
@@ -356,7 +356,7 @@
     {
       "name": "online UI: a real room code is displayed",
       "ok": true,
-      "detail": "Q8J832"
+      "detail": "RMKU9S"
     },
     {
       "name": "online UI: host controls rendered (bots + start)",
@@ -594,6 +594,96 @@
       "detail": ""
     },
     {
+      "name": "audit: test accounts ready",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: SQL injection in a query param is inert",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: SQL injection in gameId is rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: database intact after injection attempts",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: malformed JSON returns 400, not 500",
+      "ok": true,
+      "detail": "status=400"
+    },
+    {
+      "name": "audit: oversized payload is refused cleanly",
+      "ok": true,
+      "detail": "status=413"
+    },
+    {
+      "name": "audit: server still healthy after malformed traffic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: admin can create a question",
+      "ok": true,
+      "detail": "status=201"
+    },
+    {
+      "name": "audit: stored markup is stripped from admin copy",
+      "ok": true,
+      "detail": "prompt=\"alert(2)\""
+    },
+    {
+      "name": "audit: profile without a token is 401",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: forged token is 401",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: unknown session id is 404 (no IDOR)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: student cannot reach the admin API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: inflated baseScore is clamped",
+      "ok": true,
+      "detail": "score=600"
+    },
+    {
+      "name": "audit: re-completing a session adds no score",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: negative level is rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: out-of-range level is rejected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audit: zero answer keys leaked across all six games",
+      "ok": true,
+      "detail": "0 leaked"
+    },
+    {
       "name": "routes: all 22 routes render in a real DOM without runtime errors",
       "ok": true,
       "detail": ""
@@ -796,7 +886,7 @@
     {
       "name": "gameplay battle: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1645 chars"
+      "detail": "1594 chars"
     },
     {
       "name": "GameShell renders 10 levels for Ұлы дала шежіресі",
@@ -930,6 +1020,36 @@
     },
     {
       "name": "GameShell exposes a start button",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reaper: dedicated server boots",
+      "ok": true,
+      "detail": "port 8852"
+    },
+    {
+      "name": "reaper: lobby room is registered",
+      "ok": true,
+      "detail": "AZFL2T"
+    },
+    {
+      "name": "reaper: abandoned lobby is reclaimed",
+      "ok": true,
+      "detail": "after 0s, rooms=0"
+    },
+    {
+      "name": "reaper: match starts before the players vanish",
+      "ok": true,
+      "detail": "{\"ok\":true,\"path\":\"/ws\",\"rooms\":1,\"players\":2,\"activeGames\":1}"
+    },
+    {
+      "name": "reaper: abandoned in-progress match is reclaimed",
+      "ok": true,
+      "detail": "after 28s, rooms=0 activeGames=0"
+    },
+    {
+      "name": "reaper: server stays healthy throughout",
       "ok": true,
       "detail": ""
     }

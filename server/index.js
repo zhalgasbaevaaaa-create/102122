@@ -39,6 +39,17 @@ const isProd = process.env.NODE_ENV === 'production';
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '256kb' }));
 
+// A malformed or oversized body is a client error, not a server crash.
+app.use((err, req, res, next) => {
+  if (err?.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Сұраныс денесі дұрыс JSON емес', code: 'BAD_JSON' });
+  }
+  if (err?.type === 'entity.too.large') {
+    return res.status(413).json({ error: 'Сұраныс тым үлкен', code: 'PAYLOAD_TOO_LARGE' });
+  }
+  return next(err);
+});
+
 // Security headers. NOTE: no X-Frame-Options / restrictive frame-ancestors —
 // the app is intentionally embeddable (sandbox preview panes).
 app.use((req, res, next) => {
@@ -91,6 +102,20 @@ const requireRole = (...roles) => (req, res, next) => {
   }
   next();
 };
+
+/**
+ * Strip HTML/control characters from user-supplied copy and cap its length.
+ * React escapes output anyway; this keeps stored data and exports clean.
+ */
+function sanitizeText(value, max) {
+  return [...String(value ?? '')]
+    .filter((ch) => ch.charCodeAt(0) >= 32 || ch === '\n')
+    .join('')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, max);
+}
 
 const touch = (userId) => db.prepare('UPDATE users SET last_activity = ? WHERE id = ?').run(now(), userId);
 
@@ -651,6 +676,14 @@ app.post('/api/admin/questions', requireRole('admin'), (req, res) => {
     return res.status(400).json({ error: 'Дұрыс жауап индексі дұрыс емес' });
   }
   if (!explanation || explanation.length < 10) return res.status(400).json({ error: 'Түсіндірме міндетті' });
+  // Admin text is stored, displayed and exported, so strip markup and cap length
+  // here rather than trusting any downstream consumer to escape it.
+  const cleanPrompt = sanitizeText(prompt, 400);
+  const cleanExplanation = sanitizeText(explanation, 800);
+  const cleanOptions = options.map((o) => sanitizeText(o, 200));
+  if (!cleanPrompt || cleanExplanation.length < 10 || cleanOptions.some((o) => !o)) {
+    return res.status(400).json({ error: 'Мәтінде рұқсат етілмеген таңбалар бар' });
+  }
   if (!['mcq', 'truefalse', 'fill-blank', 'multi-select'].includes(format)) {
     return res.status(400).json({ error: 'Бұл формат қолдау көрсетілмейді' });
   }
@@ -658,8 +691,8 @@ app.post('/api/admin/questions', requireRole('admin'), (req, res) => {
   db.prepare(
     `INSERT INTO custom_questions (id, category, difficulty, format, prompt, options, answer_key, explanation, source_id, created_by, created_at, active)
      VALUES (?,?,?,?,?,?,?,?,?,?,?,1)`,
-  ).run(id, category, Number(difficulty), format, prompt, JSON.stringify(options.map((t, i) => ({ id: String(i), text: t }))),
-    JSON.stringify({ type: 'index', value: [answerIndex] }), explanation, sourceId, req.user.id, now());
+  ).run(id, category, Number(difficulty), format, cleanPrompt, JSON.stringify(cleanOptions.map((t, i) => ({ id: String(i), text: t }))),
+    JSON.stringify({ type: 'index', value: [answerIndex] }), cleanExplanation, sourceId, req.user.id, now());
   audit(req, 'question_created', id, req.user.id);
   res.status(201).json({ ok: true, id });
 });

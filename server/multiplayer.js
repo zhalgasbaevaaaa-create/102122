@@ -33,9 +33,15 @@ import { finalizeSession } from './scoring.js';
 import { answerLabel } from './answer-label.js';
 
 const PATH = '/ws';
+
+/** Structured, low-noise logging: only state transitions that matter. */
+const logger = {
+  info: (...a) => { if (process.env.MP_DEBUG !== 'off') console.log('[mp]', ...a); },
+  warn: (...a) => console.log('[mp]', ...a),
+};
 const MAX_ROOM = 8;                     // seats per room (4v4)
 const MIN_SEATS = 2;
-const HOST_GRACE_MS = 90_000;           // host disconnect tolerance before abort
+const HOST_GRACE_MS = Number(process.env.MP_GRACE_MS) || 90_000; // reconnect tolerance
 const ROOM_TTL_MS = 30 * 60_000;        // abandon idle rooms
 const FEED_LIMIT = 40;                  // recent-events buffer sent on resync
 const BOT_NAMES = ['Айбек (бот)', 'Нұрсұлтан (бот)', 'Томирис (бот)', 'Сырым (бот)', 'Ұлжан (бот)', 'Күлтегін (бот)'];
@@ -176,6 +182,7 @@ function createRoom(user, ws, opts) {
     hostTimer: null,
     createdAt: Date.now(),
     touch: Date.now(),
+    emptySince: null,
   };
   rooms.set(code, room);
   const seat = joinRoom(room, user, ws);
@@ -502,24 +509,54 @@ export function roomByCode(code) {
   return rooms.get(String(code || '').toUpperCase()) ?? null;
 }
 
-/** Heartbeat: drop rooms whose humans are all gone, expire idle rooms. */
+/**
+ * Reaper. Runs every 15s and is the only thing that guarantees rooms do not
+ * accumulate: the per-socket `close` handler cannot be trusted (crashes, network
+ * loss, terminated tabs all skip it), so membership is re-checked from live
+ * socket state instead.
+ *
+ * A room is destroyed when:
+ *   • nobody human is connected for HOST_GRACE_MS (covers abandoned lobbies and
+ *     abandoned matches alike — reconnecting inside the grace window keeps it), or
+ *   • it has been idle for ROOM_TTL_MS and is not mid-question.
+ *
+ * Memory safety matters here: a finished room used to linger until its 10-minute
+ * timer fired even after everyone left, and a room whose sockets all dropped
+ * never scheduled anything at all.
+ */
 const sweeper = setInterval(() => {
   const nowMs = Date.now();
+  if (process.env.MP_DEBUG === 'trace') {
+    for (const r of rooms.values()) {
+      const hum = r.seats.filter((s) => !s.bot);
+      const con = hum.filter((s) => s.ws && s.ws.readyState === 1);
+      console.log(`[sweep] ${r.code} status=${r.status} humans=${hum.length} connected=${con.length} emptySince=${r.emptySince ? Math.round((nowMs - r.emptySince) / 1000) + 's' : '-'} grace=${Math.round(HOST_GRACE_MS / 1000)}s`);
+    }
+  }
   for (const room of [...rooms.values()]) {
     const humans = room.seats.filter((s) => !s.bot);
     const connected = humans.filter((s) => s.ws && s.ws.readyState === 1);
-    if (room.status !== 'finished' && humans.length > 0 && connected.length === 0) {
-      if (!room.hostTimer) {
-        room.hostTimer = setTimeout(() => {
-          const stillGone = room.seats.filter((s) => !s.bot).every((s) => !s.ws || s.ws.readyState !== 1);
-          if (stillGone && room.status !== 'finished') destroyRoom(room, 'Барлық ойыншы ажыратылды');
-        }, HOST_GRACE_MS);
-      }
-    } else if (room.hostTimer && connected.length > 0) {
-      clearTimeout(room.hostTimer);
-      room.hostTimer = null;
+
+    if (humans.length === 0) {
+      logger.info(`reaping ${room.code}: no human seats left`);
+      destroyRoom(room, 'Бөлмеде ойыншы қалмады');
+      continue;
     }
-    if (nowMs - room.touch > ROOM_TTL_MS && room.status !== 'playing') destroyRoom(room, 'Уақыт шегі');
+
+    if (connected.length === 0) {
+      // start the grace window on the first sweep that finds everybody gone
+      if (!room.emptySince) room.emptySince = nowMs;
+      if (nowMs - room.emptySince > HOST_GRACE_MS) {
+        logger.info(`reaping ${room.code}: no connected humans for ${Math.round((nowMs - room.emptySince) / 1000)}s (status=${room.status})`);
+        destroyRoom(room, 'Барлық ойыншы ажыратылды');
+        continue;
+      }
+    } else {
+      room.emptySince = null;
+    }
+
+    const idleTooLong = nowMs - room.touch > ROOM_TTL_MS;
+    if (idleTooLong && room.status !== 'playing') destroyRoom(room, 'Уақыт шегі');
   }
 }, 15_000);
 sweeper.unref?.();
@@ -674,7 +711,14 @@ export function attachMultiplayer(server) {
   // heartbeat — drop dead sockets so seats free up
   const hb = setInterval(() => {
     for (const ws of wss.clients) {
-      if (!ws.isAlive) { ws.terminate(); continue; }
+      // readyState is authoritative: a socket that closed between sweeps (tab
+      // killed, network dropped) is dropped immediately instead of lingering for
+      // one more ping cycle.
+      if (ws.readyState !== 1) {
+        try { ws.terminate(); } catch { /* already gone */ }
+        continue;
+      }
+      if (!ws.isAlive) { logger.warn('dropping unresponsive socket'); try { ws.terminate(); } catch {} continue; }
       ws.isAlive = false;
       try { ws.ping(); } catch { /* ignore */ }
     }

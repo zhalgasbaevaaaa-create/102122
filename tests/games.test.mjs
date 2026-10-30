@@ -79,7 +79,9 @@ export async function runGameTests() {
     };
   };
 
-  // fetch stub for the session/challenge endpoints
+  // fetch stub for the session/challenge endpoints — saved so the stub does not
+  // leak into later suites (a leaked stub broke the boot of a spawned server)
+  const realFetch = globalThis.fetch;
   let answered = 0;
   const bank = (await import('../shared/question-gen.ts')).getBank();
   const firstQ = bank[0];
@@ -234,5 +236,6 @@ export async function runGameTests() {
   }
 
   await new Promise((r) => setTimeout(r, 100));
+  globalThis.fetch = realFetch;
   return results;
 }
