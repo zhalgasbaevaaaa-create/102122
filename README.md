@@ -96,7 +96,7 @@ pause/resume/restart, мобильді басқару, қазақ тілінде
 | Backend | Node.js 20 + Express 5 | REST API, 40+ эндпоинт |
 | Дерекқор | SQLite (`better-sqlite3`, WAL) | Firestore-ға 1:1 миграцияға дайын схема |
 | Аутентификация | E-mail + scrypt пароль (үшінші тарап жоқ) | cookie (httpOnly) + Bearer token |
-| Тест | Node test runner + jsdom + Playwright (script) | 211 автоматты тексеріс |
+| Тест | Node test runner + jsdom + Playwright (script) | 227 автоматты тексеріс |
 
 ### Неге SQLite, Firebase емес?
 Тапсырмада «Firebase **немесе сол деңгейдегі сенімді backend**» деп көрсетілген. Бұл нұсқада
@@ -248,12 +248,12 @@ Google Fonts-қа ешбір сұраныс жіберілмейді — CSP `fo
 ## 9. Тестілеу
 
 ```bash
-npm test                       # 211 тексеріс (Chromium жоқ ортада)
+npm test                       # 227 тексеріс (Chromium жоқ ортада)
 node tests/run-tests.mjs       # + Playwright E2E (Chromium орнатылған жерде)
 npm test -- --no-e2e           # тек content/API/render/game engine
 ```
 
-Нәтиже: **211/211 PASS** — толық есеп: [docs/TESTING.md](docs/TESTING.md),
+Нәтиже: **227/227 PASS** — толық есеп: [docs/TESTING.md](docs/TESTING.md),
 машиналық есеп: `docs/test-report.json`.
 
 ---
