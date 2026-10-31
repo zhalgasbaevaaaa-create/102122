@@ -1,7 +1,7 @@
 {
-  "ranAt": "2026-10-30T18:51:11.851Z",
-  "passed": 210,
-  "total": 210,
+  "ranAt": "2026-10-31T06:01:30.511Z",
+  "passed": 211,
+  "total": 211,
   "results": [
     {
       "name": "question bank has no structural errors",
@@ -149,7 +149,12 @@
       "detail": ""
     },
     {
-      "name": "fonts: all 17 Kazakh letters exist in the shipped subsets",
+      "name": "fonts: WOFF2 subsets are actually decoded",
+      "ok": true,
+      "detail": "647 codepoints"
+    },
+    {
+      "name": "fonts: all 18 Kazakh letters (upper + lower case) exist in the shipped subsets",
       "ok": true,
       "detail": "18/18"
     },
@@ -236,7 +241,7 @@
     {
       "name": "multiplayer: room created with a 6-character code",
       "ok": true,
-      "detail": "JL5A8A"
+      "detail": "6U3MS3"
     },
     {
       "name": "multiplayer: second player joins by code",
@@ -296,17 +301,17 @@
     {
       "name": "multiplayer: server-computed score present for every human seat",
       "ok": true,
-      "detail": "[302,0]"
+      "detail": "[143,141]"
     },
     {
       "name": "multiplayer: score arithmetic matches the server rules",
       "ok": true,
-      "detail": "[[2,302],[0,0]]"
+      "detail": "[[1,143],[1,141]]"
     },
     {
       "name": "multiplayer: XP payload returned to the player",
       "ok": true,
-      "detail": "xp=6"
+      "detail": "xp=32"
     },
     {
       "name": "multiplayer: rank returned",
@@ -316,7 +321,7 @@
     {
       "name": "multiplayer: result persisted to the player profile",
       "ok": true,
-      "detail": "battle score=60"
+      "detail": "battle score=247"
     },
     {
       "name": "multiplayer: every reveal shows a human-readable correct answer",
@@ -356,7 +361,7 @@
     {
       "name": "online UI: a real room code is displayed",
       "ok": true,
-      "detail": "RMKU9S"
+      "detail": "VDBCQS"
     },
     {
       "name": "online UI: host controls rendered (bots + start)",
@@ -886,7 +891,7 @@
     {
       "name": "gameplay battle: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1594 chars"
+      "detail": "1631 chars"
     },
     {
       "name": "GameShell renders 10 levels for Ұлы дала шежіресі",
@@ -1026,12 +1031,12 @@
     {
       "name": "reaper: dedicated server boots",
       "ok": true,
-      "detail": "port 8852"
+      "detail": "port 8850"
     },
     {
       "name": "reaper: lobby room is registered",
       "ok": true,
-      "detail": "AZFL2T"
+      "detail": "3AMZPA"
     },
     {
       "name": "reaper: abandoned lobby is reclaimed",

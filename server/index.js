@@ -775,6 +775,17 @@ app.get('/api/health', (_req, res) => {
 });
 
 // ── STATIC CLIENT ───────────────────────────────────────────────────────────
+// `public/` (fonts, icons) is served from source as well, so it works without a
+// build: the fonts are a hard requirement for Kazakh typography and must never
+// depend on someone having run `vite build` first.
+const publicDir = path.join(__dirname, '..', 'public');
+app.use(express.static(publicDir, {
+  maxAge: isProd ? '7d' : 0,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.woff2')) res.setHeader('Content-Type', 'font/woff2');
+  },
+}));
+
 const distDir = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir, { maxAge: isProd ? '1h' : 0 }));

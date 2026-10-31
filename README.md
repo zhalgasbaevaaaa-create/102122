@@ -96,7 +96,7 @@ pause/resume/restart, мобильді басқару, қазақ тілінде
 | Backend | Node.js 20 + Express 5 | REST API, 40+ эндпоинт |
 | Дерекқор | SQLite (`better-sqlite3`, WAL) | Firestore-ға 1:1 миграцияға дайын схема |
 | Аутентификация | E-mail + scrypt пароль (үшінші тарап жоқ) | cookie (httpOnly) + Bearer token |
-| Тест | Node test runner + jsdom + Playwright (script) | 210 автоматты тексеріс |
+| Тест | Node test runner + jsdom + Playwright (script) | 211 автоматты тексеріс |
 
 ### Неге SQLite, Firebase емес?
 Тапсырмада «Firebase **немесе сол деңгейдегі сенімді backend**» деп көрсетілген. Бұл нұсқада
@@ -228,7 +228,8 @@ history-arena/
 - `lora-normal-cyrillic-ext.woff2` — `U+0460-052F` (**ә ғ қ ң ө ұ ү һ**)
 - латын және latin-ext нұсқалары (сандар, тыныс белгілері, «» —)
 
-Барлық 17 қазақ әрпінің болуы тестпен расталады (`fonts: all 17 Kazakh letters exist…`).
+Барлық 9 қазақ әрпінің (Ә Ғ Қ Ң Ө Ұ Ү Һ І — үлкен-кіші 18 таңба) болуы шрифт файлдарын
+нақты Brotli-мен ашып тексеретін тестпен расталады (`fonts: all 18 Kazakh letters exist…`).
 Google Fonts-қа ешбір сұраныс жіберілмейді — CSP `font-src 'self'` және қолданба офлайн да
 дұрыс көрінеді.
 
@@ -245,12 +246,12 @@ Google Fonts-қа ешбір сұраныс жіберілмейді — CSP `fo
 ## 9. Тестілеу
 
 ```bash
-npm test                       # 210 тексеріс (Chromium жоқ ортада)
+npm test                       # 211 тексеріс (Chromium жоқ ортада)
 node tests/run-tests.mjs       # + Playwright E2E (Chromium орнатылған жерде)
 npm test -- --no-e2e           # тек content/API/render/game engine
 ```
 
-Нәтиже: **210/210 PASS** — толық есеп: [docs/TESTING.md](docs/TESTING.md),
+Нәтиже: **211/211 PASS** — толық есеп: [docs/TESTING.md](docs/TESTING.md),
 машиналық есеп: `docs/test-report.json`.
 
 ---
