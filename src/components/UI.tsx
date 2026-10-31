@@ -200,11 +200,15 @@ export function LinkCard({
 }
 
 /* ── Source reference ───────────────────────────────────────────── */
-export function SourceRefs({ ids }: { ids: string[] }) {
+export function SourceRefs({ ids }: { ids?: string[] | null }) {
+  // Defensive: a missing or malformed payload must never take down the whole
+  // question card (that is what "the answer never appears" looked like).
+  const list = Array.isArray(ids) ? ids.filter((x) => typeof x === 'string' && x) : [];
+  if (!list.length) return null;
   return (
     <div className="flex flex-wrap gap-1.5 items-center">
       <span className="text-[10px] uppercase tracking-wide text-white/35">Дереккөз:</span>
-      {ids.map((id) => (
+      {list.map((id) => (
         <span key={id} className="text-[10px] px-1.5 py-0.5 rounded bg-white/6 border border-white/10 text-white/55 font-mono">
           {id}
         </span>

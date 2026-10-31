@@ -1,7 +1,7 @@
 {
-  "ranAt": "2026-10-31T14:22:14.190Z",
-  "passed": 211,
-  "total": 211,
+  "ranAt": "2026-10-31T15:18:02.708Z",
+  "passed": 227,
+  "total": 227,
   "results": [
     {
       "name": "question bank has no structural errors",
@@ -241,7 +241,7 @@
     {
       "name": "multiplayer: room created with a 6-character code",
       "ok": true,
-      "detail": "4UNWGS"
+      "detail": "JASCC9"
     },
     {
       "name": "multiplayer: second player joins by code",
@@ -301,17 +301,17 @@
     {
       "name": "multiplayer: server-computed score present for every human seat",
       "ok": true,
-      "detail": "[286,141]"
+      "detail": "[282,143]"
     },
     {
       "name": "multiplayer: score arithmetic matches the server rules",
       "ok": true,
-      "detail": "[[2,286],[1,141]]"
+      "detail": "[[2,282],[1,143]]"
     },
     {
       "name": "multiplayer: XP payload returned to the player",
       "ok": true,
-      "detail": "xp=54"
+      "detail": "xp=32"
     },
     {
       "name": "multiplayer: rank returned",
@@ -321,7 +321,7 @@
     {
       "name": "multiplayer: result persisted to the player profile",
       "ok": true,
-      "detail": "battle score=418"
+      "detail": "battle score=247"
     },
     {
       "name": "multiplayer: every reveal shows a human-readable correct answer",
@@ -361,7 +361,7 @@
     {
       "name": "online UI: a real room code is displayed",
       "ok": true,
-      "detail": "S6XXUG"
+      "detail": "66WGTZ"
     },
     {
       "name": "online UI: host controls rendered (bots + start)",
@@ -724,6 +724,86 @@
       "detail": ""
     },
     {
+      "name": "reveal: session provides questions without keys",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reveal: a wrong answer is graded wrong",
+      "ok": true,
+      "detail": "format=truefalse"
+    },
+    {
+      "name": "reveal: wrong answer returns NO answer text",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "name": "reveal: wrong answer still teaches (explanation + sources)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reveal: a correct answer is graded correct",
+      "ok": true,
+      "detail": "format=fill-blank"
+    },
+    {
+      "name": "reveal: correct answer returns the answer text",
+      "ok": true,
+      "detail": "Беғазы-Дандыбай мәдениеті"
+    },
+    {
+      "name": "reveal: the returned label matches the real key",
+      "ok": true,
+      "detail": "key type index"
+    },
+    {
+      "name": "reveal: a level starts with 5 lives",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "reveal: engine renders the lives HUD",
+      "ok": true,
+      "detail": "hearts=5"
+    },
+    {
+      "name": "reveal: one click submits the answer (no second button needed)",
+      "ok": true,
+      "detail": "1 POST"
+    },
+    {
+      "name": "reveal: a wrong answer deducts exactly one life",
+      "ok": true,
+      "detail": "5 → 4"
+    },
+    {
+      "name": "reveal: wrong answer hides the correct answer text",
+      "ok": true,
+      "detail": "note=true"
+    },
+    {
+      "name": "reveal: explanation is still shown after a mistake",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reveal: lives reach zero and never go negative",
+      "ok": true,
+      "detail": "hearts=0"
+    },
+    {
+      "name": "reveal: the round ends when lives run out",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reveal: outcome reports lives left and skipped questions",
+      "ok": true,
+      "detail": "livesLeft=0 skipped=1"
+    },
+    {
       "name": "renders HomePage",
       "ok": true,
       "detail": "34546 chars"
@@ -841,7 +921,7 @@
     {
       "name": "gameplay adventure: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1024 chars"
+      "detail": "1028 chars"
     },
     {
       "name": "gameplay strategy: level select → briefing → in-game HUD",
@@ -851,7 +931,7 @@
     {
       "name": "gameplay strategy: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1582 chars"
+      "detail": "1586 chars"
     },
     {
       "name": "gameplay defense: level select → briefing → in-game HUD",
@@ -861,7 +941,7 @@
     {
       "name": "gameplay defense: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1007 chars"
+      "detail": "1017 chars"
     },
     {
       "name": "gameplay race: level select → briefing → in-game HUD",
@@ -871,7 +951,7 @@
     {
       "name": "gameplay race: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1015 chars"
+      "detail": "1019 chars"
     },
     {
       "name": "gameplay puzzle: level select → briefing → in-game HUD",
@@ -891,7 +971,7 @@
     {
       "name": "gameplay battle: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1465 chars"
+      "detail": "1840 chars"
     },
     {
       "name": "GameShell renders 10 levels for Ұлы дала шежіресі",
@@ -1036,7 +1116,7 @@
     {
       "name": "reaper: lobby room is registered",
       "ok": true,
-      "detail": "NXSLD7"
+      "detail": "LYXDNA"
     },
     {
       "name": "reaper: abandoned lobby is reclaimed",

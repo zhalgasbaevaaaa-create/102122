@@ -186,6 +186,14 @@ console.log('\n═══ 3. WEBSOCKET MULTIPLAYER (2 live clients) ════�
     rec('routes UI suite executed', false, e.message.slice(0, 200));
   }
 
+  console.log('\n═══ 4c. ANSWER REVEAL + LIVES ═══════════════════════════');
+  try {
+    const { runRevealTests } = await import('./reveal.test.mjs');
+    await runRevealTests(BASE, rec);
+  } catch (e) {
+    rec('reveal suite executed', false, e.message.slice(0, 200));
+  }
+
   console.log('\n═══ 5. REACT RENDER SMOKE (every route) ════════════════');
   try {
     const { runRenderTests } = await import('./render.test.mjs');

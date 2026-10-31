@@ -14,13 +14,13 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { useNavigate } from 'react-router-dom';
 import {
   Play, Pause, RotateCcw, Volume2, VolumeX, HelpCircle, ChevronLeft, Trophy, Star, Zap,
-  ArrowRight, Lock, CheckCircle2, BookOpen, Target, Radio,
+  ArrowRight, Lock, CheckCircle2, BookOpen, Target, Radio, Heart,
 } from 'lucide-react';
 import type { GameDef, LevelDef } from '@shared/games';
 import type { Question } from '@shared/quiz-types';
 import { api, ApiError } from '../lib/api';
 import { playSfx, soundPrefs, primeAudio } from '../lib/sound';
-import { QuizEngine, type QuizOutcome } from './QuizEngine';
+import { QuizEngine, LIVES_PER_LEVEL, type QuizOutcome } from './QuizEngine';
 import { useAuth } from '../lib/auth';
 import { Badge, Modal, ProgressBar, Spinner, Stat, useToast, SourceRefs } from '../components/UI';
 import { GameBackdrop } from '../components/GameBackdrop';
@@ -34,6 +34,9 @@ export interface ChallengeApi {
   addScore: (n: number) => void;
   sound: (name: Parameters<typeof playSfx>[0]) => void;
   paused: boolean;
+  /** lives left in this level (starts at 5 every level) */
+  lives: number;
+  livesMax: number;
 }
 
 const ChallengeCtx = createContext<ChallengeApi | null>(null);
@@ -75,7 +78,12 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizIndex, setQuizIndex] = useState(0);
-  const [activeQuestion, setActiveQuestion] = useState<{ q: Question; resolve: (ok: boolean) => void } | null>(null);
+  const [activeQuestion, setActiveQuestion] = useState<{
+    q: Question;
+    resolve: (ok: boolean) => void;
+    answered: boolean;
+    correct: boolean;
+  } | null>(null);
   const [baseScore, setBaseScore] = useState(0);
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(soundPrefs.muted);
@@ -83,6 +91,8 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
   const [result, setResult] = useState<CompleteResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [quizStats, setQuizStats] = useState({ correct: 0, wrong: 0, streakBest: 0 });
+  const [lives, setLives] = useState(LIVES_PER_LEVEL);
+  const [outOfLives, setOutOfLives] = useState(false);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const startedAt = useRef<number>(0);
   const runKey = useRef(0);
@@ -125,6 +135,8 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
       setQuizIndex(0);
       setBaseScore(0);
       setQuizStats({ correct: 0, wrong: 0, streakBest: 0 });
+      setLives(LIVES_PER_LEVEL);
+      setOutOfLives(false);
       setLevel(lvl);
       setPaused(false);
       startedAt.current = Date.now();
@@ -139,6 +151,11 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
     }
   }
 
+  /**
+   * A game mechanic asks for one historical check. Resolves `true` only when the
+   * player answered correctly — a mistake costs one life and the mechanic stays
+   * closed, so it must be retried (that is what makes the answer matter).
+   */
   const ask = useCallback((): Promise<boolean> => {
     return new Promise((resolve) => {
       setQuizIndex((idx) => {
@@ -146,7 +163,7 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
           resolve(false);
           return idx;
         }
-        setActiveQuestion({ q: questions[idx], resolve });
+        setActiveQuestion({ q: questions[idx], resolve, answered: false, correct: false });
         setPaused(true);
         return idx + 1;
       });
@@ -188,8 +205,8 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
   }
 
   const challenge: ChallengeApi = useMemo(
-    () => ({ ask, remaining: Math.max(0, questions.length - quizIndex), baseScore, addScore, sound, paused }),
-    [ask, questions.length, quizIndex, baseScore, addScore, sound, paused],
+    () => ({ ask, remaining: Math.max(0, questions.length - quizIndex), baseScore, addScore, sound, paused, lives, livesMax: LIVES_PER_LEVEL }),
+    [ask, questions.length, quizIndex, baseScore, addScore, sound, paused, lives],
   );
 
   // ── result screen ────────────────────────────────────────────────
@@ -205,7 +222,7 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
             {passed ? <Trophy size={28} className="text-teal" /> : <RotateCcw size={26} className="text-[#e08a6a]" />}
           </div>
           <h2 className="font-display text-2xl sm:text-3xl text-parchment">
-            {passed ? 'Деңгей аяқталды!' : 'Деңгей аяқталды — қайталап көріңіз'}
+            {lives === 0 ? 'Жан бітті — деңгей аяқталды' : passed ? 'Деңгей аяқталды!' : 'Деңгей аяқталды — қайталап көріңіз'}
           </h2>
           <p className="text-sm text-white/50 mt-1.5">
             {game.title} · {level.n}-деңгей · {level.title}
@@ -216,6 +233,11 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
             <Stat label="XP" value={`+${result.xp}`} accent="teal" icon={<Zap size={15} />} />
             <Stat label="Дәлдік" value={`${result.accuracy}%`} sub={`${result.correct} дұрыс / ${result.wrong} қате`} />
             <Stat label="Серия" value={`×${result.bestStreak}`} sub="ең ұзақ дұрыс серия" />
+            <Stat
+              label="Жан"
+              value={`${lives}/${LIVES_PER_LEVEL}`}
+              sub={lives === 0 ? 'жан бітті' : 'қалған жан'}
+            />
           </div>
 
           <div className="mt-5 glass px-4 py-3 text-left">
@@ -449,6 +471,9 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
           <div className="ml-auto flex items-center gap-2">
             <Badge tone="gold"><Star size={11} /> {baseScore}</Badge>
             <Badge tone="teal"><Target size={11} /> {quizIndex}/{questions.length}</Badge>
+            <Badge tone={lives > 2 ? 'gold' : 'danger'}>
+              <Heart size={11} /> {lives}/{LIVES_PER_LEVEL}
+            </Badge>
             <button className="btn btn-ghost px-2 py-1.5" onClick={() => setPaused((p) => !p)} aria-label="Кідірту">
               {paused ? <Play size={14} /> : <Pause size={14} />}
             </button>
@@ -464,6 +489,25 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
         <ErrorBoundary key={`eb-${runId}`} label={`${game.title} · ${level.n}-деңгей`} onReset={() => setPhase('select')}>
           <Stage key={runId} game={game} level={level} paused={paused || Boolean(activeQuestion)} />
         </ErrorBoundary>
+
+        {/* lives ended: the level stops here */}
+        {outOfLives && phase === 'playing' && (
+          <div className="glass-strong p-5 mt-2 text-center animate-pop">
+            <Heart size={26} className="mx-auto text-[#e0607a] mb-2" />
+            <p className="font-display text-lg text-parchment">Барлық жан бітті</p>
+            <p className="text-xs text-white/50 mt-1">
+              Деңгейде 5 жан беріледі. Қайта бастап, сұрақтарды мұқият оқып көріңіз.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2 justify-center">
+              <button className="btn btn-gold px-5 py-2.5 text-sm" onClick={() => void finishLevel()}>
+                Нәтижені сақтау <ArrowRight size={15} />
+              </button>
+              <button className="btn btn-ghost px-5 py-2.5 text-sm" onClick={restart}>
+                <RotateCcw size={15} /> Қайта бастау
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* objective + finish control */}
         <div className="glass px-3 py-2 mt-2 flex items-center gap-3 flex-wrap">
@@ -512,27 +556,48 @@ export function GameShell({ game, Stage, progress }: { game: GameDef; Stage: Sta
                 sessionId={sessionId}
                 questions={[activeQuestion.q]}
                 perQuestionSeconds={0}
+                lives={lives}
+                onLivesChange={setLives}
                 onFinish={() => {}}
                 onAnswer={(ok) => {
                   setQuizStats((s) => ({
                     correct: s.correct + (ok ? 1 : 0),
                     wrong: s.wrong + (ok ? 0 : 1),
-                    streakBest: s.streakBest,
+                    streakBest: ok ? Math.max(s.streakBest, s.correct + 1) : s.streakBest,
                   }));
                   if (ok) addScore(100);
+                  setActiveQuestion((a) => (a ? { ...a, answered: true, correct: ok } : a));
                 }}
               />
-              <button
-                className="btn btn-teal w-full mt-2 py-2.5"
-                onClick={() => {
-                  const q = activeQuestion;
-                  setActiveQuestion(null);
-                  setPaused(false);
-                  q.resolve(true);
-                }}
-              >
-                Жалғастыру <ArrowRight size={16} />
-              </button>
+              {/* The mechanic opens only when the answer was correct; after a
+                  mistake the player may retry while lives remain. */}
+              {activeQuestion.answered && lives > 0 && (
+                <button
+                  className="btn btn-teal w-full mt-2 py-2.5"
+                  onClick={() => {
+                    const a = activeQuestion;
+                    setActiveQuestion(null);
+                    setPaused(false);
+                    a.resolve(a.correct);
+                  }}
+                >
+                  {activeQuestion.correct ? 'Жалғастыру' : 'Қайтадан көру'} <ArrowRight size={16} />
+                </button>
+              )}
+              {lives === 0 && (
+                <button
+                  className="btn btn-gold w-full mt-2 py-2.5"
+                  onClick={() => {
+                    const a = activeQuestion;
+                    setActiveQuestion(null);
+                    setPaused(false);
+                    setOutOfLives(true);
+                    a.resolve(false);
+                  }}
+                >
+                  Жан бітті — нәтижені көру <ArrowRight size={16} />
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -564,6 +629,8 @@ function HelpModal({ game, open, onClose }: { game: GameDef; open: boolean; onCl
         <div className="glass px-3 py-2.5">
           <p className="text-[11px] uppercase tracking-wider text-white/40 mb-1">Ұпай есептеу</p>
           <p className="text-xs text-white/60 leading-relaxed">
+            Әр деңгейде <span className="text-gold">5 жан</span> беріледі. Дұрыс емес жауап (немесе уақыт біту)
+            бір жанды алады, ал дұрыс жауап тек дұрыс тапқанда ғана көрсетіледі. Жан бітсе деңгей аяқталады.
             Әр дұрыс жауап 100 ұпай (қиындық коэффициентімен), серия үшін қосымша ұпай беріледі.
             Ойын механикасынан жиналған ұпай серверде шектеледі (әр сұраққа 120 ұпайдан аспайды) —
             осылайша нәтижені браузерден бұрмалау мүмкін емес.

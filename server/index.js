@@ -18,6 +18,7 @@ import {
 } from './auth.js';
 
 import { GAMES, gameById } from '../shared/games.ts';
+import { answerLabel } from './answer-label.js';
 import { PERIODS } from '../shared/periods.ts';
 import { HISTORICAL_EVENTS } from '../shared/events.ts';
 import { PERSONS } from '../shared/persons.ts';
@@ -324,10 +325,14 @@ app.post('/api/session/:id/answer', requireAuth, (req, res) => {
   db.prepare('INSERT INTO answer_log (session_id, user_id, question_id, correct, answer, created_at) VALUES (?,?,?,?,?,?)')
     .run(s.id, req.user.id, questionId, correct ? 1 : 0, JSON.stringify(answer ?? null).slice(0, 500), now());
 
+  // Product rule: the correct answer is revealed ONLY when the player got it
+  // right. After a mistake the explanation still teaches the history, but the
+  // answer text stays hidden so the next attempt is genuine.
   res.json({
     correct,
     explanation: q.explanation,
     sourceIds: q.sourceIds,
+    answerText: correct ? answerLabel(q) : null,
     correctCount,
     wrongCount,
     streak,

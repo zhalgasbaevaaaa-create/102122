@@ -97,7 +97,7 @@ export function BattleStage({ game, level }: { game: GameDef; level: LevelDef })
     setTurnDone(true);
   }
 
-  const finished = round >= rounds;
+  const finished = round >= rounds || challenge.lives === 0;
 
   if (!mode) {
     return (
@@ -185,7 +185,9 @@ export function BattleStage({ game, level }: { game: GameDef; level: LevelDef })
       {finished ? (
         <div className="text-center py-6">
           <Trophy size={30} className="mx-auto text-gold mb-2" />
-          <p className="font-display text-2xl text-parchment">Сайыс аяқталды</p>
+          <p className="font-display text-2xl text-parchment">
+            {challenge.lives === 0 ? 'Жан бітті — сайыс аяқталды' : 'Сайыс аяқталды'}
+          </p>
           <p className="text-sm text-white/60 mt-1.5">
             {mode === 'team'
               ? (teamScore && teamScore[0] === teamScore[1]
@@ -209,7 +211,8 @@ export function BattleStage({ game, level }: { game: GameDef; level: LevelDef })
               {mode === 'team' ? `${active < 2 ? 'А' : 'Б'} командасының ойыншысы` : `${active + 1}-ойыншы`}
             </span>
           </p>
-          <p className="text-xs text-white/35 mb-5">Сұрақ 25 секунд ішінде жауапталуы керек.</p>
+          <p className="text-xs text-white/35 mb-1">Сұрақ 25 секунд ішінде жауапталуы керек.</p>
+          <p className="text-xs text-[#e0607a] mb-5">Жан: {challenge.lives}/{challenge.livesMax} · қате жауап −1 жан</p>
           <button className="btn btn-gold px-6 py-3" onClick={() => void beginTurn()} disabled={showQuiz}>
             <Swords size={16} /> Кезекті бастау
           </button>
@@ -218,8 +221,8 @@ export function BattleStage({ game, level }: { game: GameDef; level: LevelDef })
       )}
 
       <p className="text-[10px] text-white/35 mt-2">
-        Ескерту: бұл режим бір құрылғыда ойналатын жергілікті сайыс. Желілік мультиплеер үшін бөлек WebSocket
-        сервері қажет — бұл нұсқада орындалмаған (README → шектеулер).
+        Бұл — бір құрылғыда ойналатын жергілікті сайыс. Желідегі нақты жарыс үшін жоғарыдағы
+        «Онлайн сайыс (WebSocket)» режимін қолданыңыз.
       </p>
     </div>
   );
