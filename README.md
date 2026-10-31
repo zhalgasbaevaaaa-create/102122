@@ -153,8 +153,10 @@ history-arena/
 │   │   └── battle/           # білім сайысы (4 режим)
 │   └── pages/                # 15 бет
 │
-├── tests/                    # run-tests.mjs, api, render, games, e2e
+├── tests/                    # run-tests.mjs, api, render, games, reaper, e2e
 ├── docs/                     # DATABASE.md, TESTING.md, DEPLOYMENT.md, CONTENT.md
+├── Dockerfile                # өндіріс образі (екі сатылы, root емес қолданушы)
+├── render.yaml               # Render.com Blueprint — бір басумен тұрақты домен
 └── data/arena.db             # runtime дерекқор (git-ке кірмейді)
 ```
 
@@ -260,7 +262,9 @@ npm test -- --no-e2e           # тек content/API/render/game engine
 
 > Толық талап-матрицасы (әр талап → күйі → дәлелі): **[docs/FEATURES.md](docs/FEATURES.md)**.
 > Мазмұнды қалай өзгерту: **[docs/CONTENT.md](docs/CONTENT.md)**.
-> Орналастыру: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
+> Орналастыру: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — ең жылдамы:
+> `render.yaml` арқылы Render.com-ға бір басумен шығару (тұрақты домен, тегін жоспар),
+> немесе `docker build -t history-arena . && docker run -p 8787:8787 -v arena-data:/data history-arena`.
 
 
 Бұл бөлім «жасалмаған нәрсені жасалды деп көрсетпеу» қағидасы бойынша жазылған.

@@ -1,0 +1,35 @@
+# Render.com blueprint — free tier, one web service + one persistent disk.
+#
+#   1. push this repo to GitHub
+#   2. Render → New → Blueprint → pick the repo → Apply
+#   3. open https://<service-name>.onrender.com
+#
+# The disk is what keeps SQLite alive across deploys. Without it every deploy
+# starts from an empty database.
+services:
+  - type: web
+    name: history-arena
+    runtime: docker
+    plan: free
+    region: frankfurt
+
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8787
+      - key: DATA_DIR
+        value: /data
+      # Demo accounts are seeded on the very first boot only; existing players
+      # are never touched. Set to `off` and run `npm run seed` manually if you
+      # prefer to control when accounts appear.
+      - key: SEED_ON_BOOT
+        value: on
+
+    disk:
+      name: arena-data
+      mountPath: /data
+      sizeGB: 1

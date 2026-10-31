@@ -23,7 +23,34 @@ curl -s localhost:8787/api/health
 
 ---
 
-## 2. Google Cloud Run
+## 2. Render.com — ең жылдам жол (тегін, тұрақты домен)
+
+Репозиторийде `render.yaml` (Blueprint) дайын:
+
+1. https://dashboard.render.com → **New → Blueprint** → осы репозиторийді таңдаңыз.
+2. Render `render.yaml`-ды оқып, бір web service + 1 ГБ тұрақты диск жасайды → **Apply**.
+3. 3–6 минуттан кейін сілтеме дайын: `https://history-arena-xxxx.onrender.com`
+   (бұл домен **өзгермейді**, сандбокс сияқты өшіп қалмайды).
+
+Не істелінеді:
+
+| Параметр | Мән | Неге |
+|---|---|---|
+| `runtime` | `docker` | жобаның `Dockerfile`-ы қолданылады |
+| `healthCheckPath` | `/api/health` | Render алдымен сервердің тірі екенін тексереді |
+| `DATA_DIR` | `/data` | SQLite тұрақты дискіде жатады |
+| `disk.mountPath` | `/data` | deploy сайын деректер сақталады |
+
+> ⚠️ Тегін жоспарда сервис ~15 минут қозғалыссыз тұрса «ұйықтайды» — келесі ашылу
+> 30–60 с алады (бұл — Render-дің шектеуі, қосымшаның қатесі емес). Деректер жоғалмайды.
+> Толық тегін емес шешім қажет болса — Railway/Fly.io немесе төмендегі VPS нұсқасы.
+
+**Fly.io / Railway** үшін де сол `Dockerfile` жарайды: айнымалылар
+`PORT`, `DATA_DIR=/data`, `SEED_ON_BOOT` — үшеуін де орнатып, `/data` томын қосу жеткілікті.
+
+---
+
+## 3. Google Cloud Run
 
 ```bash
 # 1) образды жинау (Dockerfile төменде)
@@ -45,36 +72,30 @@ gcloud run deploy history-arena \
 > Filestore) қажет, әйтпесе деректер әр қайта іске қосылғанда жоғалады.
 > Көп инстанция қажет болса — SQLite орнына Postgres/Cloud SQL-ға көшіңіз (схема 1:1).
 
-### `Dockerfile`
+### `Dockerfile` (репозиторийде дайын)
 
-```dockerfile
-FROM node:20-bookworm-slim AS build
-WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build && npm prune --omit=dev
+`Dockerfile` мен `.dockerignore` жобаның түбірінде бар — қайта жазу қажет емес:
 
-FROM node:20-bookworm-slim
-WORKDIR /app
-ENV NODE_ENV=production PORT=8787 DATA_DIR=/data
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/server ./server
-COPY --from=build /app/shared ./shared
-COPY package.json ./
-RUN mkdir -p /data
-EXPOSE 8787
-CMD ["node", "--import", "tsx", "server/index.js"]
+```bash
+docker build -t history-arena .
+docker run -p 8787:8787 -v arena-data:/data history-arena
+# → http://localhost:8787
 ```
 
-> Ескерту: production образінде `tsx` қажет, себебі сервер `shared/*.ts` файлдарын импорттайды.
-> Балама: `tsc` арқылы серверді алдын ала жинау (келесі қадам ретінде ұсынылады).
+Нені ескеру керек:
+
+- **better-sqlite3** native модуль — build кезеңінде `python3 make g++` орнатылады;
+  runtime кезеңіне тек дайын модульдер көшеді (екі сатылы образ).
+- Runtime кезеңіне **`public/` да көшіріледі** — қаріптер (Lora) мен favicon сол жерде.
+  Бұл жол бұрынғы құжаттағы нұсқада жетіспейтін (қаріптер 404 болар еді).
+- `tsx` production тәуелділіктерде қалады, себебі сервер `shared/*.ts` файлдарын тікелей импорттайды.
+- Контейнер `node` қолданушысымен (root емес) жұмыс істейді, `/data` соған тиесілі.
+- `HEALTHCHECK` әр 30 с сайын `/api/health`-ты тексереді.
+- /data томы — міндетті: онсыз дерекқор контейнермен бірге жойылады.
 
 ---
 
-## 3. Firebase Hosting (фронт) + Cloud Run (API)
+## 4. Firebase Hosting (фронт) + Cloud Run (API)
 
 `firebase.json`:
 
@@ -103,7 +124,7 @@ Cloud Run доменіне тікелей қосылу керек немесе `
 
 ---
 
-## 4. Кәдімгі VPS (systemd + nginx)
+## 5. Кәдімгі VPS (systemd + nginx)
 
 ```ini
 # /etc/systemd/system/history-arena.service
@@ -157,7 +178,7 @@ server {
 
 ---
 
-## 5. GitHub
+## 6. GitHub
 
 ```bash
 git init
@@ -190,7 +211,7 @@ jobs:
 
 ---
 
-## 6. Өндіріс алдындағы тексеру тізімі
+## 7. Өндіріс алдындағы тексеру тізімі
 
 - [ ] `SEED_ON_BOOT=off` (демо аккаунттар жасалмауы үшін)
 - [ ] Демо құпия сөздер өзгертілген (немесе дерекқор жаңадан құрылған)

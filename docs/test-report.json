@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-10-31T06:01:30.511Z",
+  "ranAt": "2026-10-31T14:22:14.190Z",
   "passed": 211,
   "total": 211,
   "results": [
@@ -241,7 +241,7 @@
     {
       "name": "multiplayer: room created with a 6-character code",
       "ok": true,
-      "detail": "6U3MS3"
+      "detail": "4UNWGS"
     },
     {
       "name": "multiplayer: second player joins by code",
@@ -301,17 +301,17 @@
     {
       "name": "multiplayer: server-computed score present for every human seat",
       "ok": true,
-      "detail": "[143,141]"
+      "detail": "[286,141]"
     },
     {
       "name": "multiplayer: score arithmetic matches the server rules",
       "ok": true,
-      "detail": "[[1,143],[1,141]]"
+      "detail": "[[2,286],[1,141]]"
     },
     {
       "name": "multiplayer: XP payload returned to the player",
       "ok": true,
-      "detail": "xp=32"
+      "detail": "xp=54"
     },
     {
       "name": "multiplayer: rank returned",
@@ -321,7 +321,7 @@
     {
       "name": "multiplayer: result persisted to the player profile",
       "ok": true,
-      "detail": "battle score=247"
+      "detail": "battle score=418"
     },
     {
       "name": "multiplayer: every reveal shows a human-readable correct answer",
@@ -361,7 +361,7 @@
     {
       "name": "online UI: a real room code is displayed",
       "ok": true,
-      "detail": "VDBCQS"
+      "detail": "S6XXUG"
     },
     {
       "name": "online UI: host controls rendered (bots + start)",
@@ -891,7 +891,7 @@
     {
       "name": "gameplay battle: answering returns verdict + historical explanation",
       "ok": true,
-      "detail": "1631 chars"
+      "detail": "1465 chars"
     },
     {
       "name": "GameShell renders 10 levels for Ұлы дала шежіресі",
@@ -1036,7 +1036,7 @@
     {
       "name": "reaper: lobby room is registered",
       "ok": true,
-      "detail": "3AMZPA"
+      "detail": "NXSLD7"
     },
     {
       "name": "reaper: abandoned lobby is reclaimed",
