@@ -23,7 +23,42 @@ curl -s localhost:8787/api/health
 
 ---
 
-## 2. Render.com — ең жылдам жол (тегін, тұрақты домен)
+## 2. Render.com — тірі орналастыру (орындалды ✅)
+
+**Тірі сайт:** **https://history-arena.onrender.com**
+
+| Параметр | Мән |
+|---|---|
+| Service id | `srv-dbivmm2jnfac73boia90` |
+| Аймақ / жоспар | frankfurt / free |
+| Runtime | docker (`./Dockerfile`) |
+| Auto-deploy | `main` тармағына әр push сайын |
+| Health check | `/api/health` |
+
+Келесі өзгерісті жіберу: `git push origin main` → Render өзі қайта құрастырады.
+
+### ⚠️ Ашық шектеу: тұрақты диск
+
+Тегін жоспарда **диск қосылмаған** (`POST /v1/disks` → «Payment information is required»),
+сондықтан SQLite `/data` ішінде контейнермен бірге өмір сүреді. Салдары:
+
+- әр жаңа деплойда дерекқор **нөлден** құрылады (`SEED_ON_BOOT=on` демо деректерді қайта жасайды);
+- пайдаланушылар тіркейтін аккаунттар мен нәтижелер деплой арасында сақталмайды.
+
+**Шешу жолдары (бірін таңдаңыз):**
+
+1. **Диск қосу** — Render dashboard → Billing-ке карта тіркеу → осы сервиске 1 ГБ диск,
+   mount path `/data`. Содан кейін деректер тұрақты болады. (`render.yaml` осыны күтеді.)
+2. **Сыртқы Postgres** — `server/db.js` бір ғана жерде `better-sqlite3` қолданады;
+   схема `docs/DATABASE.md`-де 1:1 берілген, Postgres-қа көшіру механикалық жұмыс.
+3. Деректер маңызды болмаса (демо/көрсетілім) — қазіргі күйі жеткілікті.
+
+> Демек: **функционал тұрғыдан сайт толық** (барлық 6 ойын, мультиплеер, 11 бет),
+> бірақ тегін жоспарда дерекқор деплой сайын жаңарады.
+
+---
+
+## 3. Render.com — Blueprint арқылы (балама жол)
 
 Репозиторийде `render.yaml` (Blueprint) дайын:
 
@@ -50,7 +85,7 @@ curl -s localhost:8787/api/health
 
 ---
 
-## 3. Google Cloud Run
+## 4. Google Cloud Run
 
 ```bash
 # 1) образды жинау (Dockerfile төменде)
@@ -95,7 +130,7 @@ docker run -p 8787:8787 -v arena-data:/data history-arena
 
 ---
 
-## 4. Firebase Hosting (фронт) + Cloud Run (API)
+## 5. Firebase Hosting (фронт) + Cloud Run (API)
 
 `firebase.json`:
 
@@ -124,7 +159,7 @@ Cloud Run доменіне тікелей қосылу керек немесе `
 
 ---
 
-## 5. Кәдімгі VPS (systemd + nginx)
+## 6. Кәдімгі VPS (systemd + nginx)
 
 ```ini
 # /etc/systemd/system/history-arena.service
@@ -178,7 +213,7 @@ server {
 
 ---
 
-## 6. GitHub
+## 7. GitHub
 
 ```bash
 git init
@@ -211,7 +246,7 @@ jobs:
 
 ---
 
-## 7. Өндіріс алдындағы тексеру тізімі
+## 8. Өндіріс алдындағы тексеру тізімі
 
 - [ ] `SEED_ON_BOOT=off` (демо аккаунттар жасалмауы үшін)
 - [ ] Демо құпия сөздер өзгертілген (немесе дерекқор жаңадан құрылған)

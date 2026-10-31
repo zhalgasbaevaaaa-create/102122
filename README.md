@@ -262,6 +262,8 @@ npm test -- --no-e2e           # тек content/API/render/game engine
 
 > Толық талап-матрицасы (әр талап → күйі → дәлелі): **[docs/FEATURES.md](docs/FEATURES.md)**.
 > Мазмұнды қалай өзгерту: **[docs/CONTENT.md](docs/CONTENT.md)**.
+> 🌐 **Тірі сайт:** **https://history-arena.onrender.com** (Render.com, docker, auto-deploy `main`)
+>
 > Орналастыру: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — ең жылдамы:
 > `render.yaml` арқылы Render.com-ға бір басумен шығару (тұрақты домен, тегін жоспар),
 > немесе `docker build -t history-arena . && docker run -p 8787:8787 -v arena-data:/data history-arena`.
